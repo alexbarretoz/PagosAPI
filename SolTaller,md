@@ -1,0 +1,24 @@
+# Uso del proyecto
+
+Ejemplo de post
+
+```json
+{
+    "servicio": "NF",
+    "monto": 14.5,
+    "usuario": 1
+}
+```
+
+Para crear algunos Serivicios en la interfaz de DRF, pueden comentar la línea de `permission_classes = [IsAuthenticated]` de `pagos/api.py`.
+
+Recordar crear un usuario dentro de la de datos, en el repositorio ya viene un incluido
+
+```json
+{
+    "email": "marcelo@example.com",
+    "password": 12345678
+}
+```
+
+Si quieren hacer GET, se debe usar el token obtenido del login y dentro de un cliente externo que les permita mandar los request.
