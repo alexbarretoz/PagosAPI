@@ -7,6 +7,7 @@ from django.db import models
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password, **extra_fields):
+        #pone todo minuscula
         email = self.normalize_email(email)
 
         user = self.model(email=email, **extra_fields)
@@ -18,10 +19,14 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password, **extra_fields):
+        #va setear
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
+        #is_staff .. columnas por defecto en django
+
         if extra_fields.get("is_staff") is not True:
+            #hacemos un error
             raise ValueError("El superusuario necesita que is_staff sea verdadero")
 
         if extra_fields.get("is_superuser") is not True:
@@ -34,6 +39,7 @@ class User(AbstractUser):
     id = models.AutoField(primary_key=True)
     email = models.CharField(max_length=80, unique=True, default="no@email.com")
     username = models.CharField(max_length=45)
+    #acepta nulos
     date_of_birth = models.DateField(null=True)
 
     objects = CustomUserManager()
@@ -41,4 +47,5 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ["username"]
 
     def __str__(self):
+        #devuelve username
         return self.username

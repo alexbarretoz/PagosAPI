@@ -11,17 +11,22 @@ class SignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
+        #campos a serializar
         fields = ["email", "username", "password"]
 
     def validate(self, attrs):
 
+        #ver si existe
         email_exists = User.objects.filter(email=attrs["email"]).exists()
         if email_exists:
+            #devuelve el msj
             raise ValidationError("El email ya ha sido usado")
         return super().validate(attrs)
 
     def create(self, validated_data):
+        # .pop extrae lo que vale password
         password = validated_data.pop("password")
+        #create esta en el super user
         user = super().create(validated_data)
         user.set_password(password)
         user.save()
@@ -29,6 +34,7 @@ class SignUpSerializer(serializers.ModelSerializer):
 
         return user
 
+#retornar toda lista de usuario que tenemos
 class GetUserSerializer(serializers.ModelSerializer):
     email = serializers.CharField(max_length=80)
     username = serializers.CharField(max_length=45)

@@ -16,9 +16,11 @@ from django.shortcuts import redirect
 class SignUpView(generics.GenericAPIView):
     serializer_class = SignUpSerializer
 
+    #metodo post (view)
     def post(self, request: Request):
         data = request.data
 
+        #data que serializo
         serializer = self.serializer_class(data=data)
 
         if serializer.is_valid():
@@ -34,10 +36,14 @@ class SignUpView(generics.GenericAPIView):
 class LoginView(APIView):
 
     def post(self, request: Request):
+        #datos que viene en el request
         email = request.data.get("email")
         password = request.data.get("password")
 
+        #autenticar datos
         user = authenticate(email=email, password=password)
+
+        # si no es nulo
         if user is not None:
             tokens = create_jwt_pair_for_user(user)
             idUser = User.objects.get(email=email)

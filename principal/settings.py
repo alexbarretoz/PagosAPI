@@ -24,6 +24,11 @@ SECRET_KEY = 'django-insecure-wtqmd8ifb%7ksovbu4ubigf=zdooq+c+y6sc$af8^ikhe)3_@k
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = False
+
+
 
 ALLOWED_HOSTS = []
 
@@ -37,6 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_seed',
+    'corsheaders',
+    'django_filters',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework.authtoken',
@@ -48,6 +56,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -134,11 +143,20 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.ScopedRateThrottle',
+        #'rest_framework.throttling.AnonRateThrottle', #anonimos
+       # 'rest_framework.throttling.UserRateThrottle', #usuarios logeados
     ],
     'DEFAULT_THROTTLE_RATES': {
         'pagos': '1000/day',
+        'mil': '1000/day',
+        '2mil': '2000/day',
 
-    }
+
+    },
+
+    "DEFAULT_FILTER_BACKENDS":[
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ]
 }
 
 CACHES = {
@@ -148,3 +166,12 @@ CACHES = {
 }
 
 AUTH_USER_MODEL = 'users.User'
+
+
+CORS_ALLOWED_ORIGINS = [
+   
+'http://127.0.0.1:8000'
+  
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
